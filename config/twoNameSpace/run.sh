@@ -112,13 +112,21 @@ if [ $PCAP_MODE -ne 0 ]; then
     PID_LIST+=($SUDO_TCPDUMP_PID $TCPDUMP_PID)
 fi
 
-sudo -E ./bin/upf -c ./config/upfcfg.yaml -l ${LOG_PATH}${LOG_NAME} &
+# Setup SMF IP for PFCP communication with namespaced UPFs
+sudo ip addr add 10.200.200.10/24 dev veth1-host 2>/dev/null || true
+sudo ip addr add 10.200.200.10/24 dev veth2-host 2>/dev/null || true
+
+# Add routes in namespaces to reach SMF
+sudo ip netns exec slice1 ip route add 10.200.200.10/32 via 10.200.200.1 2>/dev/null || true
+sudo ip netns exec slice2 ip route add 10.200.200.10/32 via 10.200.200.2 2>/dev/null || true
+
+sudo -E ip netns exec slice1 ./bin/upf -c ./config/upfcfg.yaml -l ${LOG_PATH}${LOG_NAME} &
 SUDO_UPF_PID=$!
 sleep 0.1
 UPF_PID=$(pgrep -P $SUDO_UPF_PID)
 PID_LIST+=($SUDO_UPF_PID $UPF_PID)
 
-sudo -E ./bin/upf -c ./config/upfcfg2.yaml -l ${LOG_PATH}upf2.log &
+sudo -E ip netns exec slice2 ./bin/upf -c ./config/upfcfg2.yaml -l ${LOG_PATH}upf2.log &
 SUDO_UPF2_PID=$!
 sleep 0.1
 UPF2_PID=$(pgrep -P $SUDO_UPF2_PID)
