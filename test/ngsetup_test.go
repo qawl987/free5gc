@@ -89,26 +89,25 @@ func init() {
 	case initNF:
 		initLogPath()
 
-		startNfCfg := test.StartNFsConfig{
-			OAuth:  initNfCfg.OAuth,
-			TestId: initNfCfg.TestId,
+		// startNfCfg := test.StartNFsConfig{
+		// 	OAuth:  initNfCfg.OAuth,
+		// 	TestId: initNfCfg.TestId,
 
-			Nrf:  true,
-			Amf:  true,
-			Smf:  true,
-			Udr:  true,
-			Pcf:  true,
-			Udm:  true,
-			Nssf: true,
-			Ausf: true,
-			Chf:  true,
-			Bsf:  true,
-		}
-		NFstructs = test.CreateNFs(startNfCfg)
-		NfStart()
+		// 	Nrf:  true,
+		// 	Amf:  true,
+		// 	Smf:  true,
+		// 	Udr:  true,
+		// 	Pcf:  true,
+		// 	Udm:  true,
+		// 	Nssf: true,
+		// 	Ausf: true,
+		// 	Chf:  true,
+		// }
+		// NFstructs = test.CreateNFs(startNfCfg)
+		// NfStart()
 
 	default:
-		setMongoDB()
+		// setMongoDB()
 	}
 
 }

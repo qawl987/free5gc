@@ -41,9 +41,9 @@ import (
 
 const ranN2Ipv4Addr string = "127.0.0.1"
 const amfN2Ipv4Addr string = "127.0.0.1"
-const amfN2Ipv4Addr2 string = "127.0.0.50"
-const ranN3Ipv4Addr string = "10.200.200.1"
-const upfN3Ipv4Addr string = "10.200.200.102"
+const amfN2Ipv4Addr2 string = "127.0.0.1"
+const ranN3Ipv4Addr string = "127.0.0.1"
+const upfN3Ipv4Addr string = "127.0.0.1"
 
 func recvUeConfigUpdateCmd(t *testing.T, recvMsg []byte, conn *sctp.SCTPConn) {
 	n, err := conn.Read(recvMsg)
@@ -89,10 +89,10 @@ func TestRegistration(t *testing.T) {
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
-	servingPlmnId := "20893"
+	// servingPlmnId := "20893"
 
 	// insert UE data to MongoDB
-	test.InsertUeToMongoDB(t, ue, servingPlmnId)
+	// test.InsertUeToMongoDB(t, ue, servingPlmnId)
 
 	// send InitialUeMessage(Registration Request)(imsi-208930000007487)
 	mobileIdentity5GS := nasType.MobileIdentity5GS{
@@ -256,13 +256,13 @@ func TestRegistration(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	// delete test data
-	test.DelUeFromMongoDB(t, ue, servingPlmnId)
+	// test.DelUeFromMongoDB(t, ue, servingPlmnId)
 
 	// close Connection
 	conn.Close()
 
 	// terminate all NF
-	NfTerminate()
+	// NfTerminate()
 }
 
 // Registration -> DeRegistration(UE Originating)
